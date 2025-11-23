@@ -1,5 +1,4 @@
 import ExternalServices from "./ExternalServices.mjs";
-import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
 import { updateCartNum, loadHeaderFooter } from "./utils.mjs";
 

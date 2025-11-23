@@ -7,7 +7,7 @@ export function qs(selector, parent = document) {
 
 // retrieve data from localstorage
 export function getLocalStorage(key) {
-  return JSON.parse(localStorage.getItem(key)) || [];
+  return JSON.parse(localStorage.getItem(key));
 }
 // save data to local storage
 export function setLocalStorage(key, data) {
@@ -22,7 +22,7 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-// get the product id from the query string
+
 export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -39,26 +39,61 @@ export function renderListWithTemplate(template, parentElement, list, position =
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 
-export function renderWithTemplate(template, parentElement, data, callback) {
-  parentElement.innerHTML = template;
-  if (callback) {
+export function renderWithTemplate(templateFn, parentElement, callback, data) {
+  parentElement.innerHTML = templateFn;
+  if(callback) {
     callback(data);
   }
 }
 
-async function loadTemplate(path) {
+export async function loadTemplate(path){
   const res = await fetch(path);
   const template = await res.text();
   return template;
 }
 
-export async function loadHeaderFooter() {
-  const headerTemplate = await loadTemplate("../partials/header.html");
-  const footerTemplate = await loadTemplate("../partials/footer.html");
-
+export async function loadHeaderFooter(){
+  const headerTemplate = await loadTemplate("/partials/header.html");
+  const footerTemplate = await loadTemplate("/partials/footer.html");
   const headerElement = document.querySelector("#main-header");
   const footerElement = document.querySelector("#main-footer");
-
-  renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
+  renderWithTemplate(headerTemplate, headerElement, updateCartNum);
+  }
+
+// Function to show the number of elements in the cart
+export function updateCartNum(){
+  const cart = getLocalStorage("so-cart") || [];
+  const number = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+  const cartIcon = document.querySelector(".count-cart");
+
+  if (cartIcon){
+    cartIcon.textContent = number;
+    cartIcon.style.display = "inline-block";
+  }
+}
+
+export function alertMessage(message, scroll = true) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert-box");
+  alert.innerHTML = `<p>${message}</p>`;
+
+  const main = document.querySelector("main");
+  if (main) {
+    main.prepend(alert);
+  }
+
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  setTimeout(() => {
+    alert.remove();
+  }, 5000);
+}
+
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert-box");
+  alerts.forEach(alert => alert.remove());
 }
