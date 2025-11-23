@@ -1,5 +1,8 @@
 // ProductData.mjs
-// Utility function to convert fetch response to JSON
+
+// Define baseURL at the top using the environment variable
+const baseURL = import.meta.env.VITE_SERVER_URL;
+
 function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -8,33 +11,31 @@ function convertToJson(res) {
   }
 }
 
-// Base URL coming from Vite environment variables
-const baseURL = import.meta.env.VITE_SERVER_URL;
-
-// A separate function for API-based product lookup
-export async function getServerData(category) {
-  const response = await fetch(`${baseURL}products/search/${category}`);
-  const data = await convertToJson(response);
-  return data.Result;
-}
-
-// Main class for loading local JSON product files
 export default class ProductData {
-  constructor(category) {
-    this.category = category;
-    this.path = `../json/${this.category}.json`;
+  // Constructor no longer needs category or path since we're using the API
+  constructor() {}
+
+  // Updated getData method to use async/await and accept category as a parameter
+  async getData(category) {
+    try {
+      const response = await fetch(`${baseURL}products/search/${category}`);
+      const data = await convertToJson(response);
+      return data.Result; // Return the Result array from the API
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
   }
 
-  // Load products from local JSON file
-  getData() {
-    return fetch(this.path)
-      .then(convertToJson)
-      .then((data) => data);
-  }
-
-  // Find one product by ID
+  // Updated findProductById to query API directly by ID
   async findProductById(id) {
-    const products = await this.getData();
-    return products.find((item) => item.Id === id);
+    try {
+      const response = await fetch(`${baseURL}product/${id}`);
+      const data = await convertToJson(response);
+      return data; // Returns single product object
+    } catch (error) {
+      console.error(`Error fetching product with id ${id}:`, error);
+      return null;
+    }
   }
 }
