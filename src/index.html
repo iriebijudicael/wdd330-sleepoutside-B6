@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sleep Outside | Home</title>
-    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/style.css" />
     <script src="js/main.js" type="module"></script>
   </head>
 
@@ -28,37 +28,70 @@
           </p>
         </div>
       </div>
+      <div id="registerModal" class="modal hidden">
+      <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2> Join the Adventure!</h2>
+          <p>Register now and enter our giveaway to win outdoor gear!</p>
+          <a href="/src/register/index.html" class="cta-button">Register Now</a>
+        </div>
+      </div>
 
-      <section class="products">
-        <ul class="product-grid">
-          <li>
-            <a href="product_listing/index.html?category=tents">
-              <img src="images/category-tents.svg" alt="Tents" />
-              <h2>Tents</h2>
-            </a>
-          </li>
-          <li>
-            <a href="product_listing/index.html?category=backpacks">
-              <img src="images/category-backpacks.svg" alt="Backpacks" />
-              <h2>Backpacks</h2>
-            </a>
-          </li>
-          <li>
-            <a href="product_listing/index.html?category=sleeping-bags">
-              <img src="images/category-sleepingbags.svg" alt="Sleeping Bags" />
-              <h2>Sleeping Bags</h2>
-            </a>
-          </li>
-          <li>
-            <a href="product_listing/index.html?category=hammocks">
-              <img src="images/category-hammocks.svg" alt="Hammocks" />
-              <h2>Hammocks</h2>
-            </a>
-          </li>
-        </ul>
+
+      <section class="logo-categories">
+        <a
+          href="product_listing/index.html?category=tents"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-tents.svg"
+            alt="tent image for logo"
+          />
+          <div>Tents</div>
+        </a>
+        <a
+          href="product_listing/index.html?category=backpacks"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-backpacks.svg"
+            alt="backpack image for logo"
+          />
+          <div>Backpacks</div>
+        </a>
+        <a
+          href="product_listing/index.html?category=sleeping-bags"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-sleepingbags.svg"
+            alt="sleeping bag image for logo"
+          />
+          <div>Sleeping Bags</div>
+        </a>
+        <a
+          href="product_listing/index.html?category=hammocks"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-hammocks.svg"
+            alt="hammock image for logo"
+          />
+          <div>Hammocks</div>
+        </a>
       </section>
-      <!-- <a href="/cart/checkout.html" class="checkout-btn">Checkout</a> -->
     </main>
+
+    <!-- Newsletter Subscription Section -->
+    <section class="newsletter">
+      <h2>Subscribe to our Newsletter</h2>
+      <p>Get the latest outdoor gear news, tips, and special offers!</p>
+      <form id="newsletter-form">
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+    
     <footer id="main-footer"></footer>
   </body>
 </html>

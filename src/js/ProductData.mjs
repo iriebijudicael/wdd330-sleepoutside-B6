@@ -1,41 +1,71 @@
-// ProductData.mjs
+import { getLocalStorage, setLocalStorage, updateCartNum, qs } from "./utils.mjs";
 
-// Define baseURL at the top using the environment variable
-const baseURL = import.meta.env.VITE_SERVER_URL;
+export default class ProductDetails {
 
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Bad Response");
+  constructor(productId, dataSource) {
+    this.productId = productId;
+    this.product = {};
+    this.dataSource = dataSource;
+  }
+
+  async init() {
+    // use the datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
+    this.product = await this.dataSource.findProductById(this.productId);
+    // the product details are needed before rendering the HTML
+    this.renderProductDetails();
+    // once the HTML is rendered, add a listener to the Add to Cart button
+    // Notice the .bind(this). This callback will not work if the bind(this) is missing. Review the readings from this week on "this" to understand why.
+    document
+      .getElementById("add-to-cart")
+      .addEventListener("click", this.addProductToCart.bind(this));
+  }
+
+  addProductToCart() {
+    const cartItems = getLocalStorage("so-cart") || [];
+    
+    // check if the product is in the cart and update quantity of the product
+    const existingItem = cartItems.findIndex((item) => item.Id === this.product.Id);
+    if(existingItem > -1){
+      cartItems[existingItem].quantity = (cartItems[existingItem].quantity || 1) + 1;
+    } else {
+      const newProduct = {...this.product, quantity: 1};
+      cartItems.push(newProduct);
+    }
+
+    
+    setLocalStorage("so-cart", cartItems);
+    updateCartNum();
+ 
+    //gr--task04 animate icon
+    const cartIcon = qs(".count-cart");
+    if (cartIcon) {
+      cartIcon.classList.add("cart-animate");
+      setTimeout(() => {
+        cartIcon.classList.remove("cart-animate");
+      }, 400);
+    }
+  }
+
+  renderProductDetails() {
+    productDetailsTemplate(this.product);
   }
 }
 
-export default class ProductData {
-  // Constructor no longer needs category or path since we're using the API
-  constructor() {}
+function productDetailsTemplate(product) {
+  document.querySelector("h2").textContent = product.Category.charAt(0).toUpperCase() + product.Category.slice(1);
+  document.querySelector("#p-brand").textContent = product.Brand.Name;
+  document.querySelector("#p-name").textContent = product.NameWithoutBrand;
 
-  // Updated getData method to use async/await and accept category as a parameter
-  async getData(category) {
-    try {
-      const response = await fetch(`${baseURL}products/search/${category}`);
-      const data = await convertToJson(response);
-      return data.Result; // Return the Result array from the API
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      return [];
-    }
-  }
+  const productImage = document.querySelector("#p-image");
+  productImage.src = product.Images.PrimaryExtraLarge;
+  productImage.alt = product.NameWithoutBrand;
+  const euroPrice = new Intl.NumberFormat("de-DE",
+    {
+      style: "currency", currency: "EUR",
+    }).format(Number(product.FinalPrice) * 0.85);
+  document.querySelector("#p-price").textContent = `${euroPrice}`;
+  document.querySelector("#p-color").textContent = product.Colors[0].ColorName;
+  document.querySelector("#p-description").innerHTML = product.DescriptionHtmlSimple;
 
-  // Updated findProductById to query API directly by ID
-  async findProductById(id) {
-    try {
-      const response = await fetch(`${baseURL}product/${id}`);
-      const data = await convertToJson(response);
-      return data; // Returns single product object
-    } catch (error) {
-      console.error(`Error fetching product with id ${id}:`, error);
-      return null;
-    }
-  }
+  document.querySelector("#add-to-cart").dataset.id = product.Id;
 }
