@@ -25,3 +25,105 @@ _BYU-Pathway Worldwide improves lives through access to spiritually based, onlin
 
 
 
+
+
+
+
+
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sleep Outside | Home</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="js/main.js" type="module"></script>
+  </head>
+
+  <body>
+    <header class="divider" id="main-header"></header>
+    <main class="divider">
+      <div class="hero">
+        <img
+          src="/images/banner-sm.jpg"
+          srcset="images/banner-sm.jpg 500w, images/banner.jpg"
+          alt="image of a high mountain lake"
+        />
+        <div class="logo logo--square">
+          <img src="/images/noun_Tent_2517.svg" alt="tent image for logo" />
+          <div>Sleep<span class="highlight">Outside</span></div>
+        </div>
+        <div class="mission">
+          <p>
+            Our mission is to provide you with everything you need to sleep
+            outside comfortably at an affordable price.
+          </p>
+        </div>
+      </div>
+      <div id="registerModal" class="modal hidden">
+      <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2> Join the Adventure!</h2>
+          <p>Register now and enter our giveaway to win outdoor gear!</p>
+          <a href="/src/register/index.html" class="cta-button">Register Now</a>
+        </div>
+      </div>
+
+
+      <section class="logo-categories">
+        <a
+          href="product_listing/index.html?category=tents"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-tents.svg"
+            alt="tent image for logo"
+          />
+          <div>Tents</div>
+        </a>
+        <a
+          href="product_listing/index.html?category=backpacks"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-backpacks.svg"
+            alt="backpack image for logo"
+          />
+          <div>Backpacks</div>
+        </a>
+        <a
+          href="product_listing/index.html?category=sleeping-bags"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-sleepingbags.svg"
+            alt="sleeping bag image for logo"
+          />
+          <div>Sleeping Bags</div>
+        </a>
+        <a
+          href="product_listing/index.html?category=hammocks"
+          class="logo-square-cat"
+        >
+          <img
+            src="/images/category-hammocks.svg"
+            alt="hammock image for logo"
+          />
+          <div>Hammocks</div>
+        </a>
+      </section>
+    </main>
+
+    <!-- Newsletter Subscription Section -->
+    <section class="newsletter">
+      <h2>Subscribe to our Newsletter</h2>
+      <p>Get the latest outdoor gear news, tips, and special offers!</p>
+      <form id="newsletter-form" method="get" action="checkout/index.html">
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+    
+    <footer id="main-footer"></footer>
+  </body>
+</html> -->
