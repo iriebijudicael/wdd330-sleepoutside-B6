@@ -1,16 +1,17 @@
-import { updateCartNum, loadHeaderFooter, getParam } from "../js/utils.mjs";
-import ExternalServices from "../js/ExternalServices.mjs";
-import ProductList from "../js/ProductList.mjs";
+import { loadHeaderFooter, getParam, performSearch } from "./utils.mjs";
+import ExternalServices from "./ExternalServices.mjs";
+import ProductList from "./ProductList.mjs";
+
+// Load the header and footer
+loadHeaderFooter();
 
 const category = getParam("category");
+
+// Create an instance of ExternalServices
 const dataSource = new ExternalServices();
-const element = document.querySelector(".product-list");
-const listing = new ProductList(category, dataSource, element);
+// Define the list element
+const listElement = document.querySelector(".product-list");
 
-listing.init();
-
-// ga--The number of items in the cart (header)
-updateCartNum();
-
-// ga--To call the header and footer partials
-loadHeaderFooter();
+// Create an instance of ProductList
+const productListing = new ProductList(category, dataSource, listElement);
+productListing.init();

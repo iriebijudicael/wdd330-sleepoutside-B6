@@ -1,47 +1,13 @@
-import ExternalServices from "./ExternalServices.mjs";
-import ProductList from "./ProductList.mjs";
-import { updateCartNum, loadHeaderFooter } from "./utils.mjs";
 
-const dataSource = new ExternalServices();
-const element = document.querySelector(".product-list");
-const productList = new ProductList("Tents", dataSource, element);
+import { loadHeaderFooter } from "./utils.mjs";
+import Modal from "./modal.mjs";
 
-productList.init();
-
-//The number of items in the cart (header)
-updateCartNum();
-
-// To call the header and footer partials
+// Load the header and footer
 loadHeaderFooter();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("registerModal");
-  const closeButton = modal.querySelector(".close-button");
-
-  if (!localStorage.getItem("hasSeenRegisterModal")) {
-    modal.classList.remove("hidden");
-    localStorage.setItem("hasSeenRegisterModal", "true");
-  }
-
-  closeButton.addEventListener("click", () => {
-    modal.classList.add("hidden");
-  });
-
-  // Newsletter form handling
-  const newsletterForm = document.getElementById("newsletter-form");
-  if (newsletterForm) {
-    newsletterForm.addEventListener("submit", function(event) {
-      event.preventDefault();
-      const emailInput = document.getElementById("email");
-      const email = emailInput.value.trim();
-
-      if(email === ""){
-        alert("Please enter a valid email address.");
-        return;
-      }
-
-      alert(`Thanks for subscribing, ${email}!`);
-      newsletterForm.reset();
-    });
-  }
-});
+// Show Modal
+const title = "Register Now & Win!";
+const message =
+  "Sign up on your first visit and get a chance to win premium camping gear - tents, sleeping bags, and more! 🏕️";
+const modal = new Modal(title, message, true);
+modal.ShowModal();
