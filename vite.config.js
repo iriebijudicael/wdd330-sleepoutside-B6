@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
+import dns from "dns";
 
 export default defineConfig({
   root: "src/",
