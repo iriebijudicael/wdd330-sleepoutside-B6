@@ -1,15 +1,15 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
-import dns from "dns";
+// import dns from "dns";
 
 export default defineConfig({
   root: "src/",
 
-  server: {
-    host: "localhost",
-    port: 3000,
-    open: true,
-  },
+  // server: {
+  //   host: "localhost",
+  //   port: 5500,
+  //   open: true,
+  // },
 
   build: {
     outDir: "../dist",
