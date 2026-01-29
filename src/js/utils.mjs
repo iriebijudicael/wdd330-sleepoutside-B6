@@ -56,75 +56,71 @@ export function renderWithTemplate(templateFn, parentElement, data, callback) {
 }
 
 async function loadTemplate(path) {
+  // Fetch the template. Note: We removed the leading '/' 
+  // to make it relative to the current location.
   const res = await fetch(path);
-  const template = await res.text();
-  return template;
+  if (res.ok) {
+    const template = await res.text();
+    return template;
+  } else {
+    console.error("Could not load template at:", path);
+  }
 }
 
 // Function to dynamically load the header and footer into page
 export async function loadHeaderFooter() {
-  const headerTemplate = await loadTemplate("/partials/header.html");
-  const footerTemplate = await loadTemplate("/partials/footer.html");
+  // Use relative paths (../ or ./) so Netlify finds them correctly
+  // depending on where your index.html is located.
+  // Pro-tip: Using relative paths helps prevent 404s on deployment.
+  const headerTemplate = await loadTemplate("../partials/header.html");
+  const footerTemplate = await loadTemplate("../partials/footer.html");
 
   const header = document.querySelector("#header");
   const footer = document.querySelector("#footer");
 
-  renderWithTemplate(headerTemplate, header);
-  renderWithTemplate(footerTemplate, footer);
+  if (header) renderWithTemplate(headerTemplate, header);
+  if (footer) renderWithTemplate(footerTemplate, footer);
 
   searchProducts();
-
-  // Load cartSuperscript
   cartSuperscript();
 }
 
 function searchProducts() {
   const sButton = document.getElementById("searchButton");
-  sButton.addEventListener("click", function (e) {
-    const searchTerm = document.getElementById("searchInput").value;
-
-    performSearch(searchTerm);
-  });
+  if (sButton) {
+    sButton.addEventListener("click", function (e) {
+      const searchTerm = document.getElementById("searchInput").value;
+      performSearch(searchTerm);
+    });
+  }
 }
 
 export function performSearch(term) {
-  console.log("Performing search for:", term);
-
-  // Create the URL with the search term as a query parameter
   const searchParams = new URLSearchParams();
   searchParams.append("category", term);
 
-  // Get the current URL without the query string
-  const baseUrl = `${window.location.origin}/`;
-  console.log("Base URL:", baseUrl);
-
-  // Construct the full URL
-  const newUrl = `product-listing/index.html?${searchParams.toString()}`;
-  console.log("New URL:", newUrl);
-
-  // Navigate to the new URL
-  window.location.href = baseUrl + newUrl;
+  // Use relative navigation instead of hardcoding origin
+  // This is much safer for Netlify deployments
+  const newUrl = `../product-listing/index.html?${searchParams.toString()}`;
+  window.location.href = newUrl;
 }
 
 //add superscript to cart icon
 export function cartSuperscript() {
   const cartCountElement = document.querySelector(".cart .cart-superscript");
+  if (!cartCountElement) return;
 
-  // Get number of items in cart
   const cartItems = getLocalStorage("so-cart") || [];
-  const numCartItems = cartItems.reduce((acc, item) => acc + item.Qtd, 0);
-  // console.log(cartItems);
+  const numCartItems = cartItems.reduce((acc, item) => acc + (item.Qtd || 0), 0);
 
-  //hide superscript if no items in cart from hide css class, else show num of items
   if (numCartItems === 0) {
     cartCountElement.classList.add("hide");
   } else {
     cartCountElement.classList.remove("hide");
     cartCountElement.textContent = numCartItems;
-    // Add the 'updated' class to trigger the animation
     cartCountElement.classList.add("updated");
   }
-  // Remove the class after the animation ends
+
   setTimeout(() => {
     cartCountElement.classList.remove("updated");
   }, 300);
