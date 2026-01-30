@@ -99,7 +99,7 @@ export function performSearch(term) {
   console.log("Base URL:", baseUrl);
 
   // Construct the full URL
-  const newUrl = `product-listing/index.html?${searchParams.toString()}`;
+  const newUrl = `product_listing/index.html?${searchParams.toString()}`;
   console.log("New URL:", newUrl);
 
   // Navigate to the new URL
