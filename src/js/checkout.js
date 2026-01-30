@@ -1,58 +1,17 @@
-import { updateCartNum, loadHeaderFooter } from "./utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
 import CheckoutProcess from "./CheckoutProcess.mjs";
 
-//The number of items in the cart (header)
-updateCartNum();
+loadHeaderFooter();
+const myCheckout = new CheckoutProcess("so-cart");
+myCheckout.init();
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadHeaderFooter();
+document
+  .querySelector("#zip")
+  .addEventListener("blur", myCheckout.calculateOrdertotal.bind(myCheckout));
 
-  const order = new CheckoutProcess("so-cart", "#order-summary");
-  order.init();
+// listening for click on the button
+document.querySelector("#paySubmit").addEventListener("click", (e) => {
+  e.preventDefault();
 
-  const zipInput = document.querySelector("#zip");
-  if (zipInput) {
-    zipInput.addEventListener("blur", () => {
-      order.calculateOrderTotal();
-    });
-  }
-
-  const form = document.querySelector("#checkout-form");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-      order.calculateOrderTotal();  
-      order.checkout();           
-    });
-  }
+  myCheckout.checkout();
 });
-
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const form = document.getElementById("newsletter-form");
-//   const emailInput = document.getElementById("email");
-
-//   form.addEventListener("submit", function (e) {
-//     e.preventDefault(); // stop default submission
-
-//     const email = emailInput.value.trim();
-
-//     if (validateEmail(email)) {
-//       alert("Thank you for subscribing!");
-//       form.reset();
-//       // If you want to redirect, uncomment:
-//       // window.location.href = "checkout/index.html";
-//     } else {
-//       alert("Please enter a valid email address.");
-//     }
-//   });
-// });
-
-// // Email validation function
-// function validateEmail(email) {
-//   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-// }
