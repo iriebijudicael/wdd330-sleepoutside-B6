@@ -11,13 +11,13 @@ function convertToJson(res) {
 export default class ExternalServices {
   constructor(category) {
     this.category = category;
-    // Fix: Removed the duplicate .json and logic error in pathing
+    this.path = `../json/tents.json${this.category}.json`;
   }
 
   async getData(category) {
-    // Netlify requires HTTPS; ensure VITE_SERVER_URL starts with https://
     const response = await fetch(`${baseURL}products/search/${category}`);
     const data = await convertToJson(response);
+    // console.log(data.Result);
     return data.Result;
   }
 
@@ -27,5 +27,20 @@ export default class ExternalServices {
     return data.Result;
   }
 
-  // ... (searchByTerm and checkout remain the same)
+  async searchByTerm(term) {
+    const response = await fetch(`${baseURL}products/search?term=${term}`);
+    const data = await convertToJson(response);
+    return data.Result;
+  }
+
+  async checkout(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    return await fetch(baseURL + "checkout/", options).then(convertToJson);
+  }
 }
